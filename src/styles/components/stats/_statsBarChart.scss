@@ -1,0 +1,54 @@
+// src/styles/components/stats/_statsBarChart.scss
+
+.stats-barchart {
+  width: 100%;
+  height: 100%;
+}
+
+.stats-barchart__skeleton {
+  width: 100%;
+  height: 100%;
+  border-radius: 18px;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0.06),
+    rgba(255, 255, 255, 0.02),
+    rgba(255, 255, 255, 0.06)
+  );
+  background-size: 200% 100%;
+  animation: stats-skeleton 1.2s ease-in-out infinite;
+}
+
+.stats-barchart__message {
+  width: 100%;
+  height: 100%;
+  border-radius: 18px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: radial-gradient(circle at top, #191b2b, #070813);
+
+  p {
+    margin: 0;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.8);
+
+    &.hint {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.6);
+    }
+  }
+}
+
+@keyframes stats-skeleton {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}

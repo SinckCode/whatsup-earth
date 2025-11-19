@@ -1,0 +1,105 @@
+@use "../../tokens.scss";
+
+:root {
+  /* Temas por hazard (puedes ajustar a tu paleta) */
+  --haz-wild: #ff6b3d;       /* naranja vivo */
+  --haz-quake: #3a82ff;      /* azul */
+  --haz-dust: #ffb84d;       /* ámbar */
+}
+
+/* Helpers */
+@mixin glass {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-elev);
+}
+
+.stats-scene{
+  position: relative;
+  min-height: 100dvh;
+  padding: clamp(16px, 3vw, 24px);
+  color: var(--text-strong);
+
+  /* grid principal (hero overlay) */
+  display: grid;
+  grid-template-rows: auto auto auto 1fr;
+  gap: clamp(14px, 2.5vw, 22px);
+
+  /* tema por hazard -> set de vars */
+  &.stats-scene--wildfires { --accent-1: var(--haz-wild); }
+  &.stats-scene--earthquakes { --accent-1: var(--haz-quake); }
+  &.stats-scene--dust { --accent-1: var(--haz-dust); }
+}
+
+/* header arriba */
+.scene-header{
+  display:flex; align-items:center; justify-content:space-between;
+  margin-top: 4px;
+}
+
+/* card de gráfica centrada como en mockups */
+.scene-chart{
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+/* barra de toggle YEAR/COUNTRY grande centrada */
+.scene-toggle{
+  display:flex; justify-content:center; gap:16px;
+
+  .stats-toggle .pill{
+    font-size: clamp(14px, 1.2vw, 16px);
+    padding: 12px 20px;
+    border-radius: 18px;
+    /* resaltar con el color del hazard */
+    &.active{ box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--accent-1) 70%, white 10%); }
+  }
+}
+
+/* zona de paneles mostrada cuando el usuario explora listas */
+.scene-panels{
+  display: grid;
+  gap: 18px;
+  grid-template-columns: 1fr;
+
+  /* en pantallas grandes: columna central + panel world a derecha */
+  @media (min-width: 1100px){
+    grid-template-columns: minmax(260px, 380px) minmax(420px, 520px);
+    justify-content: center;
+  }
+
+  .panel-center{ order: 1; }
+  .panel-right{ order: 2; }
+
+  /* integra los estilos de YearPicker/CountryPicker/EventList tal cual */
+  .year-picker, .country-picker, .event-list{
+    @include glass;
+  }
+}
+
+/* Cuando estás en modo YEAR o COUNTRY pero el usuario aún no abrió listas,
+   nos quedamos solo con chart + toggle (los paneles pueden ocultarse) */
+.scene-panels--year, .scene-panels--country{
+  /* si quieres ocultarlos totalmente hasta una acción, podrías:
+  display: none;
+  */
+}
+
+/* Pequeños brillos de borde para glass */
+.year-picker, .country-picker, .event-list, .chart-box{
+  outline: 1px solid rgba(255,255,255,.06);
+}
+
+/* Opcional: acentos del título y ticks de la gráfica */
+.recharts-bar-rectangle path{
+  /* utiliza el gradiente ya definido en _statsBarChart.scss; aquí
+     puedes reforzar el color del hazard en hover */
+  &:hover{ filter: drop-shadow(0 8px 18px color-mix(in oklab, var(--accent-1) 60%, black 40%)); }
+}
+
+.recharts-cartesian-axis-tick tspan{
+  fill: var(--text-soft);
+}

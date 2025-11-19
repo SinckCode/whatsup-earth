@@ -1,0 +1,204 @@
+/* =========================
+   Stats – Glass UI + Layout
+   ========================= */
+
+:root {
+  --stats-glass-bg: rgba(255, 255, 255, 0.08);
+  --stats-glass-hover: rgba(255, 255, 255, 0.12);
+  --stats-glass-border: rgba(255, 255, 255, 0.15);
+  --stats-text: rgba(255, 255, 255, 0.95);
+  --stats-text-dim: rgba(255, 255, 255, 0.8);
+  --stats-text-soft: rgba(255, 255, 255, 0.6);
+  --stats-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+}
+
+@mixin glass {
+  background: var(--stats-glass-bg);
+  border: 1px solid var(--stats-glass-border);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-radius: 16px;
+  box-shadow: var(--stats-shadow);
+}
+
+.stats-page {
+  min-height: 90vh;
+  padding: clamp(16px, 3vw, 32px);
+  color: var(--stats-text);
+  /* fondo sutil como en los mockups */
+  background:
+    radial-gradient(1200px 600px at 0% 0%, rgba(255,255,255,.06), transparent 60%),
+    radial-gradient(1000px 600px at 100% 100%, rgba(255,255,255,.05), transparent 55%),
+    #000;
+
+  .grid-main {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+
+    @media (min-width: 1024px) {
+      grid-template-columns: 1fr auto;
+    }
+  }
+}
+
+/* ---------- Header ---------- */
+
+.stats-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  user-select: none;
+
+  .title-wrap {
+    display: flex; align-items: flex-end; gap: 12px;
+
+    .title {
+      font-weight: 600;
+      letter-spacing: 0.35em;
+      font-size: clamp(18px, 2.5vw, 28px);
+      color: var(--stats-text);
+    }
+    .subtitle {
+      color: var(--stats-text-soft);
+      font-size: clamp(12px, 1.8vw, 16px);
+      margin-bottom: 2px;
+    }
+  }
+
+  .actions {
+    @include glass;
+    padding: 6px 8px;
+    display: flex; gap: 8px;
+  }
+}
+
+.icon-btn {
+  @include glass;
+  width: 36px; height: 36px;
+  display: grid; place-items: center;
+  color: var(--stats-text);
+  background: var(--stats-glass-bg);
+  transition: background .2s ease;
+  &:hover { background: var(--stats-glass-hover); }
+}
+
+/* ---------- Chart shell ---------- */
+
+.chart-shell {
+  @include glass;
+  padding: 16px;
+  width: 100%;
+
+  .chart-box {
+    height: clamp(180px, 28vw, 360px);
+    width: 100%;
+    display: grid; place-items: center;
+    color: var(--stats-text-soft);
+  }
+}
+
+/* ---------- Segmented toggle ---------- */
+
+.stats-toggle {
+  display: flex; gap: 12px;
+
+  .segmented__btn {
+    padding: 10px 18px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.10);
+    color: var(--stats-text-dim);
+    border: 1px solid var(--stats-glass-border);
+    transition: background .2s ease, color .2s ease;
+
+    &:hover { background: rgba(255,255,255,.15); }
+
+    &.is-active {
+      background: rgba(255,255,255,.25);
+      color: var(--stats-text);
+    }
+  }
+}
+
+/* ---------- Pickers (Year / Country) ---------- */
+
+.picker {
+  @include glass;
+  width: clamp(180px, 24vw, 224px);
+  padding: 12px 14px;
+
+  .search {
+    display: flex; align-items: center; gap: 8px;
+    background: rgba(255,255,255,.06);
+    border: 1px solid var(--stats-glass-border);
+    border-radius: 12px;
+    padding: 6px 10px; margin-bottom: 12px;
+
+    input {
+      background: transparent; border: 0;
+      outline: none; color: var(--stats-text);
+      width: 100%; font-size: 14px;
+      &::placeholder { color: rgba(255,255,255,.4); }
+    }
+    .search-icon { color: rgba(255,255,255,.7); font-size: 16px; }
+  }
+
+  .list {
+    max-height: 320px; overflow-y: auto; padding-right: 4px;
+    scrollbar-width: thin;
+    &::-webkit-scrollbar { width: 8px; }
+    &::-webkit-scrollbar-thumb { background: rgba(255,255,255,.18); border-radius: 8px; }
+  }
+
+  .item {
+    width: 100%; text-align: left;
+    padding: 8px 12px; border-radius: 12px;
+    background: rgba(255,255,255,.05);
+    color: var(--stats-text-dim);
+    transition: background .2s ease, color .2s ease;
+    &:hover { background: rgba(255,255,255,.10); }
+
+    &.is-active {
+      background: rgba(255,255,255,.20);
+      color: var(--stats-text);
+    }
+  }
+}
+
+/* ---------- Event list / ranking ---------- */
+
+.event-list {
+  @include glass;
+  padding: 16px;
+  width: clamp(240px, 26vw, 288px);
+
+  .world-hd {
+    margin-bottom: 12px;
+    .caption { color: var(--stats-text-soft); font-size: 12px; letter-spacing: .04em; }
+    .total { color: var(--stats-text); font-weight: 600; font-size: 24px; font-variant-numeric: tabular-nums; }
+  }
+
+  .rows {
+    display: flex; flex-direction: column; gap: 8px;
+    max-height: 384px; overflow-y: auto; padding-right: 4px;
+  }
+}
+
+.event-card {
+  @include glass;
+  display: flex; justify-content: space-between; align-items: center;
+  background: rgba(255,255,255,.05);
+  padding: 8px 12px; border-radius: 12px;
+  color: var(--stats-text-dim);
+  transition: background .2s ease, color .2s ease;
+
+  &:hover { background: var(--stats-glass-hover); }
+
+  .label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding-right: 8px; }
+  .value { font-variant-numeric: tabular-nums; color: rgba(255,255,255,.85); }
+
+  &.is-active {
+    background: rgba(255,255,255,.20);
+    color: var(--stats-text);
+  }
+}

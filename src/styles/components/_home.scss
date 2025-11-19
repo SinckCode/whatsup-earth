@@ -1,0 +1,113 @@
+/* ==========================================================
+   HERO + CARRUSEL HORIZONTAL (scroll-snap + transiciones)
+   ========================================================== */
+
+:root {
+  /* Usa tus tokens si ya existen; aquí dejo fallback */
+  --topbar-h: 56px;
+  --gutter: 24px;
+}
+
+/* HERO pantalla completa (teniendo en cuenta la TopBar) */
+.hero-section {
+  position: relative;
+  height: calc(100dvh - var(--topbar-h, 56px));
+  overflow: hidden;
+
+  .hero-planet {
+    inline-size: 100%;
+    block-size: 100%;
+    display: grid;
+    place-items: center;
+  }
+}
+
+/* CARRUSEL HORIZONTAL REAL (con snap) */
+/* Si DisasterCarousel ya renderiza .slides, estas reglas aplican ahí.
+   Si no, el propio .slides-section actúa como track horizontal. */
+.slides-section,
+.slides {
+  height: 100dvh;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 100%;
+
+  /* UX */
+  touch-action: pan-x;
+  overscroll-behavior-x: contain;
+
+  /* Oculta la barra de scroll */
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
+/* Cada slide ocupa todo el viewport */
+.slide {
+  position: relative;
+  inline-size: 100%;
+  block-size: 100%;
+  scroll-snap-align: start;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  /* Velo para mejorar contraste sobre imágenes */
+  &::after {
+    content: "";
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.55));
+  }
+
+  /* Contenido que animará cuando la slide sea activa */
+  .slide__overlay {
+    position: absolute;
+    inset: 0;
+    padding: calc(var(--topbar-h, 56px) + 40px) var(--gutter, 24px) var(--gutter, 24px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    z-index: 1;
+
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity .5s cubic-bezier(.22,.61,.36,1),
+                transform .6s cubic-bezier(.22,.61,.36,1);
+  }
+
+  /* Se activa desde Home.jsx con IntersectionObserver */
+  &[data-active="true"] .slide__overlay {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .slide__title {
+    margin: 0;
+    font-size: clamp(32px, 7vw, 84px);
+    line-height: 1;
+    letter-spacing: .01em;
+    font-weight: 800;
+  }
+}
+
+/* Sombras laterales opcionales para enfatizar el scroll horizontal */
+.slides-section::before,
+.slides-section::after,
+.slides::before,
+.slides::after {
+  content: "";
+  position: sticky;
+  top: 0;
+  inline-size: 48px;
+  block-size: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+.slides-section::before,
+.slides::before { left: 0;  background: linear-gradient(90deg, rgba(0,0,0,.55), transparent); }
+.slides-section::after,
+.slides::after  { left: calc(100% - 48px); background: linear-gradient(270deg, rgba(0,0,0,.55), transparent); }

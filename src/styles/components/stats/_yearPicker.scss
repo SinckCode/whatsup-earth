@@ -1,0 +1,70 @@
+/* ========= YearPicker ========= */
+
+:root {
+  --stats-glass-bg: rgba(255, 255, 255, 0.08);
+  --stats-glass-hover: rgba(255, 255, 255, 0.12);
+  --stats-glass-border: rgba(255, 255, 255, 0.15);
+  --stats-text: rgba(255, 255, 255, 0.95);
+  --stats-text-dim: rgba(255, 255, 255, 0.8);
+  --stats-text-soft: rgba(255, 255, 255, 0.6);
+  --stats-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+}
+
+@mixin glass {
+  background: var(--stats-glass-bg);
+  border: 1px solid var(--stats-glass-border);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-radius: 16px;
+  box-shadow: var(--stats-shadow);
+}
+
+.picker.year-picker {
+  @include glass;
+  width: clamp(180px, 24vw, 224px);
+  padding: 12px 14px;
+  color: var(--stats-text);
+
+  .search {
+    display: flex; align-items: center; gap: 8px;
+    background: rgba(255,255,255,.06);
+    border: 1px solid var(--stats-glass-border);
+    border-radius: 12px;
+    padding: 6px 10px; margin-bottom: 12px;
+
+    .search-icon { color: rgba(255,255,255,.7); width: 16px; height: 16px; }
+
+    .search-input {
+      background: transparent; border: 0; outline: none;
+      color: var(--stats-text); width: 100%; font-size: 14px;
+      &::placeholder { color: rgba(255,255,255,.4); }
+    }
+  }
+
+  .list {
+    max-height: 320px; overflow-y: auto; padding-right: 4px;
+    display: flex; flex-direction: column; gap: 8px;
+
+    scrollbar-width: thin;
+    &::-webkit-scrollbar { width: 8px; }
+    &::-webkit-scrollbar-thumb { background: rgba(255,255,255,.18); border-radius: 8px; }
+  }
+
+  .item {
+    width: 100%; text-align: left;
+    padding: 8px 12px; border-radius: 12px;
+    background: rgba(255,255,255,.05);
+    color: var(--stats-text-dim);
+    border: 1px solid var(--stats-glass-border);
+    transition: background .2s ease, color .2s ease, transform .04s ease;
+    cursor: pointer;
+
+    &:hover { background: rgba(255,255,255,.10); }
+    &:active { transform: translateY(1px); }
+
+    &.is-active {
+      background: rgba(255,255,255,.20);
+      color: var(--stats-text);
+    }
+  }
+}

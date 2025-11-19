@@ -1,0 +1,131 @@
+/* SideRail – minimal con wordmark en una línea y menú propio */
+
+$topbar-h: var(--topbar-h, 56px);
+
+.siderail {
+  position: fixed;
+  top: $topbar-h;
+  left: 0;
+  height: calc(100dvh - #{$topbar-h});
+  padding: 14px 0 0 20px;
+  display: grid;
+  grid-auto-rows: min-content;
+  gap: 12px;
+  z-index: 1500;
+  pointer-events: none; /* no bloquea el hero */
+}
+
+/* Botón hamburger del rail (3 barras reales) */
+.hamburger.rail {
+  pointer-events: auto;
+  width: 36px; height: 36px; border-radius: 999px;
+  display: grid; place-items: center;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.18);
+  color: #fff; cursor: pointer;
+  transition: background .12s ease, transform .12s ease, border-color .12s ease;
+
+  &:hover { background: rgba(255,255,255,.14); border-color: rgba(255,255,255,.28); }
+  &:active { transform: translateY(1px) scale(.98); }
+  &:focus-visible { outline: 2px solid #70b7ff; outline-offset: 2px; }
+
+  span {
+    display: block;
+    width: 14px; height: 2px; background: currentColor; border-radius: 2px;
+    &:not(:last-child){ margin-bottom: 3px; }
+  }
+}
+
+/* Wordmark: UNA sola línea, discreto y legible */
+.wordmark {
+  pointer-events: none;
+  user-select: none;
+  margin: 4px 0 0 4px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  line-height: 1;
+  /* Tamaño contenido para no invadir el globo */
+  font-size: clamp(16px, 1.6vw, 22px);
+  color: #000000 !important;
+  text-shadow: 0 6px 18px rgba(0,0,0,.45);
+  white-space: nowrap;
+}
+
+/* Overlay para click-fuera del menú */
+.rail-scrim {
+  position: fixed;
+  top: $topbar-h; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,.18);
+  backdrop-filter: blur(1px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .12s ease;
+  z-index: 2350;
+
+  &.show { opacity: 1; pointer-events: auto; }
+}
+
+/* Menú lateral del rail */
+.rail-menu {
+  position: fixed;
+  top: calc(#{$topbar-h} + 10px);
+  left: 64px;                 /* aparece a la derecha del rail */
+  width: 300px;
+  padding: 12px 0;
+  background: rgba(20,20,20,.94);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 22px;
+  box-shadow: 0 14px 40px rgba(0,0,0,.5);
+  z-index: 2400;
+
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-8px) scale(.98);
+  transition: opacity .16s ease, transform .16s ease;
+
+  &.open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(0) scale(1);
+  }
+}
+
+.rail-group { padding: 6px 8px; }
+
+.rail-label {
+  font-size: 11px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.66);
+  padding: 8px 14px 6px;
+}
+
+.rail-item {
+  width: 100%;
+  text-align: left;
+  padding: 12px 14px;
+  background: transparent;
+  color: #fff;
+  border: 0;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background .12s ease, transform .06s ease;
+
+  &:hover { background: rgba(255,255,255,.06); }
+  &:active { transform: translateY(1px); }
+  &:focus-visible { outline: 2px solid #70b7ff; outline-offset: 0; }
+}
+
+.rail-sep {
+  height: 1px;
+  margin: 6px 12px;
+  background: rgba(255,255,255,.08);
+  border-radius: 99px;
+}
+
+/* Responsivo: ancho fluido del menú en móviles */
+@media (max-width: 920px) {
+  .rail-menu { left: 16px; right: 16px; width: auto; }
+}

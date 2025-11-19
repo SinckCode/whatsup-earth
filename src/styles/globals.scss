@@ -1,0 +1,266 @@
+/* tokens/base si lo tienes */
+@use "./tokens.scss" as *;
+
+/* comunes (comenta si no existen) */
+@use "./components/common/TopBar.scss" as *;
+@use "./components/common/SideRail.scss" as *;
+
+/* stats */
+@use "./components/stats/_statsHeader.scss" as *;
+@use "./components/stats/_chartShell.scss" as *;
+@use "./components/stats/_statsToggle.scss" as *;
+@use "./components/stats/_eventCard.scss" as *;
+@use "./components/stats/_eventList.scss" as *;
+@use "./components/stats/_yearPicker.scss" as *;
+@use "./components/stats/_countryPicker.scss" as *;
+@use "./components/stats/_statsBarChart.scss" as *;
+
+html, body, #root { height:100%; }
+body { margin:0; background:var(--bg); color:var(--ink); font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Inter,Roboto,Arial; }
+
+/* Topbar */
+.topbar{ position:fixed; inset:16px 20px auto 20px; height:52px; z-index:10;
+  display:flex; align-items:center; justify-content:space-between; }
+.pill{ width:44px; height:44px; border-radius:999px; border:1px solid var(--stroke); background:var(--glass); color:var(--ink); display:grid; place-items:center; cursor:pointer; margin-left:12px; }
+
+/* Side rail */
+.siderail{ position:fixed; top:90px; left:40px; z-index:9; display:flex; flex-direction:column; gap:24px; }
+.hamburger{ width:40px; height:40px; border-radius:999px; border:1px solid var(--stroke); background:var(--glass); display:grid; place-items:center; }
+.hamburger span{ width:16px; height:2px; background:var(--ink); margin:2px 0; border-radius:2px; display:block; }
+.wordmark{ margin:0; font-weight:300; letter-spacing:.22rem; font-size:clamp(28px,5vw,48px); font-family:"Cinzel", Georgia, serif; }
+
+/* Slides (carrusel horizontal) */
+.slides{
+  position: relative;
+  height: 100dvh;
+
+  /* — horizontal real — */
+  overflow-x: auto;
+  overflow-y: hidden;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 100%;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+
+  /* UX */
+  touch-action: pan-x;
+  overscroll-behavior-x: contain;
+
+  /* ocultar barra */
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
+.slide{
+  position: relative;
+  inline-size: 100%;
+  block-size: 100dvh;
+  scroll-snap-align: start;
+  background-size: cover;
+  background-position: center;
+
+  /* viñeteado (mantengo tu radial) */
+  &::after{
+    content:"";
+    position:absolute; inset:0;
+    background: radial-gradient(80% 60% at 70% 40%, transparent, rgba(0,0,0,.6));
+  }
+}
+
+/* overlay y títulos (con animación entre slides) */
+.slide__overlay{
+  position:absolute; inset:0;
+  display:flex; flex-direction:column; justify-content:center;
+  padding-left:8vw; gap:24px; z-index:1;
+
+  /* transición entre slides */
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity .5s cubic-bezier(.22,.61,.36,1),
+              transform .6s cubic-bezier(.22,.61,.36,1);
+}
+.slide[data-active="true"] .slide__overlay{
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.slide__title{
+  font-size: clamp(36px, 8vw, 96px);
+  margin: 0;
+  text-shadow: 0 12px 60px rgba(0,0,0,.6);
+}
+
+.slide__actions{ display:flex; gap:16px; align-items:center; }
+.btn-ghost{
+  padding:12px 22px; border:1px solid var(--stroke);
+  background:var(--glass); color:var(--ink); border-radius:16px; cursor:pointer;
+}
+.btn-pill{
+  width:56px; height:56px; border-radius:999px; border:1px solid var(--stroke);
+  background:var(--glass); color:var(--ink); cursor:pointer;
+}
+
+
+/* Stats */
+.stats{ position:relative; min-height:100dvh; }
+.stats-bg{ position:absolute; inset:0; background-size:cover; background-position:center; filter:brightness(.6); }
+.stats-overlay{ position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.65)); }
+.stats-header{ position:relative; z-index:1; padding:120px 6vw 24px; display:flex; align-items:center; gap:24px; }
+.stats-title{ font-size: clamp(28px, 6vw, 72px); margin:0; }
+.stats-switch{ margin-left:auto; display:flex; gap:12px; }
+.btn-glass{ padding:14px 24px; border-radius:18px; background:var(--glass); border:1px solid var(--stroke); color:var(--ink); }
+
+/* Listado */
+.event-grid{ position:relative; z-index:1; padding:20px 6vw 60px; display:grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap:16px; }
+.event-card{ text-align:left; padding:16px; background:rgba(255,255,255,.05); border:1px solid var(--stroke); border-radius:16px; color:var(--ink); cursor:pointer; }
+
+/* Modal */
+.modal-backdrop{ position:fixed; inset:0; background:rgba(0,0,0,.55); display:grid; place-items:center; z-index:50; }
+.modal{ width:min(980px, 92vw); max-height:82vh; overflow:auto; background:#0f0f10; border:1px solid var(--stroke); border-radius:20px; }
+.modal__head{ display:flex; align-items:center; justify-content:space-between; padding:16px 20px; border-bottom:1px solid var(--stroke); }
+.modal__body{ padding:20px; }
+.icon{ background:transparent; border:none; color:var(--ink); cursor:pointer; }
+
+
+/* ===== Parche de layout para HOME (no rompe lo anterior) ===== */
+:root{
+  --topbar-h: 52px;                            /* coincide con tu .topbar */
+  --gutter: clamp(16px, 3vw, 40px);            /* separación lateral */
+}
+
+/* usa gutters variables (sin cambiar tu diseño) */
+.topbar{
+  inset: 16px var(--gutter) auto var(--gutter);
+  height: var(--topbar-h);
+}
+
+/* baja el rail para que no choque con la topbar */
+.siderail{
+  top: calc(var(--topbar-h) + 24px);
+  left: var(--gutter);
+}
+
+/* el carrusel “sabe” que hay un header fijo arriba */
+.slides{
+  scroll-padding-top: calc(var(--topbar-h) + 24px);
+}
+
+/* el contenido del slide ya no queda pegado arriba/der,
+   y limitamos ancho para que no se amontone */
+.slide__overlay{
+  padding: calc(var(--topbar-h) + 40px) var(--gutter) 10vh var(--gutter);
+  max-width: 1200px; /* evita títulos de 100% de ancho */
+}
+
+/* título un poco más controlado y legible en todas las pantallas */
+.slide__title{
+  font-size: clamp(40px, 9vw, 120px);
+  line-height: .95;
+}
+
+/* botones con respiro */
+.slide__actions{
+  gap: 16px;
+  margin-top: 8px;
+}
+
+/* === HOME como el mock (globo a la derecha) === */
+:root{
+  --topbar-h: 52px;
+  --gutter: clamp(18px, 4vw, 40px);
+}
+
+.home--hero { position: relative; min-height: 100dvh; background: var(--bg); }
+
+/* el área del hero ocupa toda la pantalla */
+.hero { position: absolute; inset: 0; z-index: 0; }
+
+/* contenedor del globo, alineado a la derecha y centrado vertical */
+.hero__planet{
+  position: absolute;
+  right: 6vw;
+  top: 50%;
+  transform: translateY(-44%);
+  width: min(820px, 54vw);      /* tamaño muy parecido al mock */
+  aspect-ratio: 1 / 1;
+  filter: drop-shadow(0 60px 120px rgba(0,0,0,.9));
+}
+
+/* el globo (canvas o img) circular */
+.hero__planet canvas,
+.hero__planet img{
+  width: 100%;
+  height: 100%;
+  border-radius: 999px;
+  object-fit: cover;
+}
+
+/* pequeños ajustes a tu topbar/rail para que no se amontonen */
+.topbar{ inset: 16px var(--gutter) auto var(--gutter); height: var(--topbar-h); z-index: 10; }
+.siderail{ top: calc(var(--topbar-h) + 28px); left: var(--gutter); z-index: 9; }
+
+/* “GEO NATURE” ya está con .wordmark; dale respiro */
+.wordmark{ margin-top: 8px; }
+
+/* === Wordmark: WHAT’S UP EARTH === */
+.wordmark{
+  margin: 0;
+  font-family: "Cinzel", Georgia, serif; /* o la que uses */
+  font-weight: 300;
+  line-height: 1.05;
+  letter-spacing: .22rem;
+  font-size: clamp(28px, 5vw, 48px);
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.wordmark .wm-line{
+  display: inline-block;
+}
+
+/* Si notas que queda muy separado en pantallas grandes: */
+@media (min-width: 1200px){
+  .wordmark{ letter-spacing: .18rem; }
+}
+
+/* Mantén el rail en su sitio respecto a la topbar */
+.siderail{ top: calc(var(--topbar-h) + 28px); }
+
+/* ===== HOME: dos secciones apiladas ===== */
+:root{
+  --topbar-h: 52px;
+  --gutter: clamp(18px, 4vw, 40px);
+}
+
+.home{ position: relative; min-height: 100dvh; background: var(--bg); }
+
+/* HERO ocupa una pantalla */
+.hero-section{
+  position: relative;
+  height: 100dvh;
+  background: var(--bg);
+}
+/* globo a la derecha, centrado vertical */
+.hero-planet{
+  position: absolute;
+  right: 6vw;
+  top: 50%;
+  transform: translateY(-44%);
+  width: min(820px, 54vw);
+  aspect-ratio: 1/1;
+  filter: drop-shadow(0 60px 120px rgba(0,0,0,.9));
+}
+.hero-planet canvas, .hero-planet img{
+  width: 100%; height: 100%; border-radius: 999px; object-fit: cover;
+}
+
+/* el carrusel viene DESPUÉS, no por encima */
+.slides-section{
+  position: relative;
+  z-index: 0;
+}
+
+/* topbar/rail respetan gutters y no tapan el hero */
+.topbar{ inset: 16px var(--gutter) auto var(--gutter); height: var(--topbar-h); z-index: 10; }
+.siderail{ top: calc(var(--topbar-h) + 28px); left: var(--gutter); z-index: 9; }

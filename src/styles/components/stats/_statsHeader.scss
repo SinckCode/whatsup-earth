@@ -1,0 +1,83 @@
+/* ========= StatsHeader ========= */
+
+:root {
+  --stats-glass-bg: rgba(255, 255, 255, 0.08);
+  --stats-glass-hover: rgba(255, 255, 255, 0.12);
+  --stats-glass-border: rgba(255, 255, 255, 0.15);
+  --stats-text: rgba(255, 255, 255, 0.95);
+  --stats-text-dim: rgba(255, 255, 255, 0.8);
+  --stats-text-soft: rgba(255, 255, 255, 0.6);
+  --stats-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+}
+
+@mixin glass {
+  background: var(--stats-glass-bg);
+  border: 1px solid var(--stats-glass-border);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-radius: 16px;
+  box-shadow: var(--stats-shadow);
+}
+
+.stats-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  user-select: none;
+  color: var(--stats-text);
+  gap: 12px;
+
+  .title-wrap {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+
+    .brand-icon {
+      width: 24px;
+      height: 24px;
+      opacity: 0.9;
+      flex: 0 0 auto;
+    }
+
+    .title {
+      font-weight: 600;
+      letter-spacing: 0.35em;
+      font-size: clamp(18px, 2.3vw, 28px);
+      line-height: 1.1;
+      margin: 0;
+    }
+
+    .subtitle {
+      margin-bottom: 2px;
+      font-size: clamp(12px, 1.6vw, 16px);
+      color: var(--stats-text-soft);
+    }
+  }
+
+  .actions {
+    @include glass;
+    padding: 6px 8px;
+    display: flex;
+    gap: 8px;
+  }
+}
+
+.icon-btn {
+  @include glass;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  color: var(--stats-text);
+  background: var(--stats-glass-bg);
+  transition: background 0.2s ease;
+  border-radius: 12px;
+
+  &:hover {
+    background: var(--stats-glass-hover);
+  }
+
+  svg {
+    display: block;
+  }
+}

@@ -1,0 +1,113 @@
+$topbar-h: 56px;
+
+:root { --topbar-h: #{$topbar-h}; }
+
+.topbar {
+  position: fixed; inset: 0 0 auto 0; height: $topbar-h;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 14px;
+  background: rgba(0,0,0,.55);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  z-index: 1000; color: #fff;
+}
+
+.brand {
+  display: flex; align-items: center; gap: 10px;
+
+  &-logo { width: 22px; height: 22px; border-radius: 50%; display: block; }
+  &-title {
+    font-size: 12px; letter-spacing: .14em; text-transform: uppercase;
+    opacity: .9; white-space: nowrap;
+  }
+}
+
+.hamburger {
+  width: 28px; height: 28px; margin-left: 6px;
+  border-radius: 999px; display: grid; place-items: center;
+  background: transparent; border: 1px solid rgba(255,255,255,.18);
+  color:#fff; cursor: pointer;
+
+  span { width: 12px; height: 2px; background: currentColor; position: relative; }
+  span::before, span::after {
+    content:""; position:absolute; left:0; width:100%; height:2px; background:currentColor;
+  }
+  span::before { top:-4px; }
+  span::after  { top: 4px; }
+}
+
+.actions { position: relative; display: flex; align-items: center; gap: 10px; }
+
+.pill {
+  width: 36px; height: 36px; border-radius: 9999px;
+  display: grid; place-items: center;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.18);
+  color: #fff; cursor: pointer;
+  transition: transform .12s ease, background .12s ease, border-color .12s ease;
+
+  &:hover { background: rgba(255,255,255,.14); border-color: rgba(255,255,255,.28); }
+  &:active { transform: translateY(1px) scale(.98); }
+  &:focus-visible { outline: 2px solid #70b7ff; outline-offset: 2px; }
+}
+
+/* ===== Dropdown base ===== */
+%dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  background: rgba(20,20,20,.92);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.45);
+  animation: dropdownIn .14s ease-out;
+  z-index: 1200;
+}
+
+.add-panel {
+  @extend %dropdown;
+  right: 86px; // a la izquierda del "+"
+  width: 260px; padding: 16px 0;
+}
+
+.stats-panel {
+  @extend %dropdown;
+  right: 40px; // debajo del botón de analítica
+  width: 260px; padding: 16px 0;
+}
+
+.add-item {
+  width: 100%; text-align: left;
+  padding: 18px 22px; background: transparent; color: #fff; cursor: pointer;
+  border: 0; font-size: 13px; letter-spacing: .16em; text-transform: uppercase;
+  transition: background .12s ease, transform .06s ease;
+
+  &:hover { background: rgba(255,255,255,.06); }
+  &:active { transform: translateY(1px); }
+  &:focus-visible { outline: 2px solid #70b7ff; outline-offset: -2px; }
+}
+
+/* ===== Search popover ===== */
+.search-pop {
+  @extend %dropdown;
+  right: 0; // anclado al botón de la lupa
+  width: 320px; padding: 12px;
+}
+
+.search-input {
+  width: 100%; height: 40px; border-radius: 12px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.18);
+  color: #fff; padding: 0 12px;
+  font-size: 14px;
+
+  &::placeholder { color: rgba(255,255,255,.6); }
+  &:focus { outline: 2px solid #70b7ff; outline-offset: 2px; }
+}
+
+@keyframes dropdownIn {
+  from { opacity: 0; transform: translateY(-4px) scale(.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Compensación del header fijo (si la usas) */
+.with-topbar { padding-top: $topbar-h; }

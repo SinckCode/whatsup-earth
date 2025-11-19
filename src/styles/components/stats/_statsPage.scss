@@ -1,0 +1,212 @@
+// src/styles/components/stats/_statsPage.scss
+
+// ====== LAYOUT GENERAL ======
+.stats-page {
+  min-height: 100vh;
+  color: #f5f5ff;
+
+  // Deja espacio para TopBar fija (si la usas así) y SideRail
+  padding: 72px 24px 32px 72px;
+
+  // Fondo base “espacial”
+  background:
+    radial-gradient(circle at top left, #202341 0, #05060d 48%, #020308 100%);
+  background-attachment: fixed;
+
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  @media (max-width: 900px) {
+    padding: 72px 16px 24px 60px;
+  }
+
+  &__inner {
+    max-width: 1240px;
+    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  &__header {
+    margin-bottom: 4px;
+  }
+
+  // ====== KPIs SUPERIORES ======
+  &__kpis {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+
+    @media (max-width: 960px) {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  // ====== CONTROLES (toggle + picker) ======
+  &__controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+
+  &__picker {
+    flex: 1;
+    max-width: 380px;
+  }
+
+  // ====== CUERPO PRINCIPAL (chart + side panel) ======
+  &__body {
+    display: grid;
+    grid-template-columns: minmax(0, 2.1fr) minmax(0, 1.1fr);
+    gap: 20px;
+
+    @media (max-width: 960px) {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  &__chart {
+    min-height: 320px;
+  }
+
+  &__side {
+    min-height: 280px;
+  }
+
+  // ====== CARD GENÉRICO ======
+  .card {
+    position: relative;
+    border-radius: 20px;
+    padding: 16px 18px;
+    background:
+      radial-gradient(circle at top left, #222743 0, #101222 40%, #05060d 100%);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 22px 70px rgba(0, 0, 0, 0.6);
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+
+    // “borde de luz” muy sutil
+    &::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      pointer-events: none;
+      border-radius: inherit;
+      background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.18),
+        transparent 30%,
+        transparent 70%,
+        rgba(255, 255, 255, 0.12)
+      );
+      opacity: 0.18;
+      mix-blend-mode: screen;
+    }
+  }
+}
+
+// ====== THEME VARIANTS POR DESASTRE ======
+
+// Wildfires: naranjas/rojos
+.stats-page--wildfires {
+  background:
+    radial-gradient(circle at top left, #3c1b29 0, #0b0509 45%, #030103 100%);
+
+  .card {
+    background:
+      radial-gradient(circle at top left, #321320 0, #14070f 40%, #050309 100%);
+    border-color: rgba(255, 148, 104, 0.25);
+  }
+}
+
+// Earthquakes: azules fríos
+.stats-page--earthquakes {
+  background:
+    radial-gradient(circle at top left, #102337 0, #050810 45%, #020309 100%);
+
+  .card {
+    background:
+      radial-gradient(circle at top left, #10213c 0, #0a0f22 40%, #04050b 100%);
+    border-color: rgba(126, 203, 255, 0.22);
+  }
+}
+
+// Dust & Haze: amarillos / sepia
+.stats-page--dust-haze {
+  background:
+    radial-gradient(circle at top left, #3a2c15 0, #0b0704 45%, #050302 100%);
+
+  .card {
+    background:
+      radial-gradient(circle at top left, #332211 0, #151007 40%, #050302 100%);
+    border-color: rgba(255, 214, 140, 0.25);
+  }
+}
+
+// Sea & Lake Ice: azules verdosos / polares
+.stats-page--sea-lake-ice {
+  background:
+    radial-gradient(circle at top left, #0f2630 0, #031019 45%, #010508 100%);
+
+  .card {
+    background:
+      radial-gradient(circle at top left, #123843 0, #081d26 42%, #03070c 100%);
+    border-color: rgba(173, 231, 255, 0.26);
+  }
+}
+
+// Severe Storms: morados/eléctricos
+.stats-page--severe-storms {
+  background:
+    radial-gradient(circle at top left, #2c1747 0, #090415 45%, #030108 100%);
+
+  .card {
+    background:
+      radial-gradient(circle at top left, #361a55 0, #160827 40%, #05020d 100%);
+    border-color: rgba(200, 166, 255, 0.28);
+  }
+}
+
+// Volcanoes: rojos/magma
+.stats-page--volcanoes {
+  background:
+    radial-gradient(circle at top left, #3b120f 0, #0b0404 45%, #030101 100%);
+
+  .card {
+    background:
+      radial-gradient(circle at top left, #4b1813 0, #210707 40%, #050202 100%);
+    border-color: rgba(255, 114, 114, 0.3);
+  }
+}
+
+// ====== KPI CARDS ======
+.kpi-card {
+  position: relative;
+  z-index: 1; // por delante del pseudo ::before de .card
+
+  &__label {
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 6px;
+  }
+
+  &__value {
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1.1;
+    color: #ffffff;
+    margin: 0 0 6px;
+  }
+
+  &__hint {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.55);
+  }
+}
