@@ -1,0 +1,67 @@
+// src/styles/components/account/_userAreaNav.scss
+
+.user-nav {
+  margin-top: 14px;
+  margin-bottom: 8px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+
+  &__track {
+    display: inline-flex;
+    gap: 8px;
+    padding: 4px;
+    border-radius: 999px;
+    background: rgba(5, 8, 22, 0.88);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.55);
+    position: relative;
+  }
+
+  &__item {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.35rem 0.95rem;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    text-decoration: none;
+    color: #d9e2ff;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition:
+      background 0.18s ease,
+      color 0.18s ease,
+      border-color 0.18s ease,
+      transform 0.1s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.05);
+      transform: translateY(-1px);
+    }
+
+    &--active {
+      background: radial-gradient(circle at top left, #5c9eff, #8f5bff);
+      color: #050814;
+      border-color: rgba(255, 255, 255, 0.4);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.65);
+
+      .user-nav__label {
+        font-weight: 600;
+      }
+    }
+  }
+
+  &__label {
+    white-space: nowrap;
+  }
+}
+
+// Opcional: integración con .page y .account-page para espaciar
+.page__header + .user-nav {
+  margin-top: 8px;
+}
+
+.account-page__header + .user-nav {
+  margin-top: 12px;
+}

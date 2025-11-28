@@ -1,11 +1,10 @@
 // src/pages/Stats.jsx
 import { useMemo, useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import "../styles/components/stats/_statsPage.scss";
 
 /* Navegación global */
 import TopBar from "../components/common/TopBar";
-import SideRail from "../components/common/SideRail";
 
 /* UI Stats */
 import StatsHeader from "../components/stats/StatsHeader";
@@ -22,6 +21,11 @@ import { useWildfiresByCountry } from "../hooks/useWildfiresByCountry";
 
 /* Config de desastres */
 import { resolveDisaster } from "../app/constants";
+
+/* Auth + Favorites */
+import { useAuth } from "../app/AuthContext";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { addFavorite } from "../api/favoritesApi";
 
 /* ---------- Config base ---------- */
 
@@ -50,6 +54,12 @@ const MOCK_DISASTERS = new Set(["earthquakes", "dust-haze"]);
 export default function StatsPage() {
   // Ruta: /stats/:disasterKey
   const { disasterKey } = useParams();
+  const [searchParams] = useSearchParams();
+  const countryParam = searchParams.get("country") || "";
+
+  // Auth
+  const { token } = useAuth();
+  const queryClient = useQueryClient();
 
   // Desastre activo (title, theme, slug de EONET, units, etc.)
   const disaster = useMemo(() => resolveDisaster(disasterKey), [disasterKey]);
@@ -58,10 +68,22 @@ export default function StatsPage() {
   const theme = disaster.theme || "wildfires";
   const isMockCategory = MOCK_DISASTERS.has(disaster.key);
 
-  const [mode, setMode] = useState("year"); // "year" | "country"
+  // Si viene country en la URL, arrancamos en modo "country"
+  const [mode, setMode] = useState(countryParam ? "country" : "year"); // "year" | "country"
   const [year, setYear] = useState(YEARS[0]);
-  const [country, setCountry] = useState(FALLBACK_COUNTRIES[0]);
+  const [country, setCountry] = useState(
+    countryParam || FALLBACK_COUNTRIES[0]
+  );
   const [activeKey, setActiveKey] = useState(null); // sync de barra/tabla/picker
+
+  // Si cambia el parámetro ?country (por ejemplo, desde SavedViews),
+  // actualizamos el estado para reflejarlo.
+  useEffect(() => {
+    if (countryParam) {
+      setMode("country");
+      setCountry(countryParam);
+    }
+  }, [countryParam]);
 
   /* --------- Data desde hooks (API) --------- */
 
@@ -117,14 +139,14 @@ export default function StatsPage() {
   const chartLoading = isMockCategory
     ? false
     : isYearMode
-      ? loadingYearApi
-      : loadingCountryApi;
+    ? loadingYearApi
+    : loadingCountryApi;
 
   const chartError = isMockCategory
     ? false
     : isYearMode
-      ? errorYearApi
-      : errorCountryApi;
+    ? errorYearApi
+    : errorCountryApi;
 
   // Normalizamos la forma esperada por StatsBarChart:
   // xKey="name", yKey="value"
@@ -165,6 +187,38 @@ export default function StatsPage() {
     setMode("country");
   };
 
+  /* --------- FAVORITOS --------- */
+
+  const favoriteMutation = useMutation({
+    mutationFn: (payload) => addFavorite(token, payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["favorites"] });
+    },
+    onError: (err) => {
+      console.error("Error al guardar favorito desde Stats:", err);
+      alert(err?.message || "No se pudo guardar en favoritos");
+    },
+  });
+
+  const handleSaveFavorite = () => {
+    if (!token) {
+      alert("Debes iniciar sesión para guardar esta vista como favorito.");
+      return;
+    }
+
+    const scope = isYearMode ? "WORLD" : country || "WORLD";
+
+    const payload = {
+      eventId: `STATS_${disaster.key || categoryId}_${year}_${scope}`,
+      title: `${disaster.title || disaster.label || "Events"} - ${scope} ${year}`,
+      category: disaster.key || categoryId,
+      link: typeof window !== "undefined" ? window.location.href : undefined,
+      note: `Guardado desde la vista de estadísticas (${isYearMode ? "Year" : "Country"})`,
+    };
+
+    favoriteMutation.mutate(payload);
+  };
+
   /* --------- Vacíos / Errores --------- */
 
   const emptyChart = !chartLoading && !chartError && chartData.length === 0;
@@ -183,7 +237,6 @@ export default function StatsPage() {
     <main className={`stats-page stats-page--${theme}`}>
       {/* Navegación global como en Home */}
       <TopBar />
-
 
       <div className="stats-page__inner">
         {/* HEADER */}
@@ -218,13 +271,10 @@ export default function StatsPage() {
         {/* CONTROLES */}
         <section className="stats-page__controls">
           <StatsToggle mode={mode} onChange={setMode} />
+
           <div className="stats-page__picker">
             {isYearMode ? (
-              <YearPicker
-                years={YEARS}
-                selectedYear={year}
-                onSelect={setYear}
-              />
+              <YearPicker years={YEARS} selectedYear={year} onSelect={setYear} />
             ) : (
               <CountryPicker
                 countries={countries}
@@ -239,6 +289,18 @@ export default function StatsPage() {
               />
             )}
           </div>
+
+          {/* Botón para guardar esta combinación como favorito */}
+          <button
+            type="button"
+            className="btn btn--primary stats-page__fav-btn"
+            onClick={handleSaveFavorite}
+            disabled={favoriteMutation.isLoading}
+          >
+            {favoriteMutation.isLoading
+              ? "Guardando…"
+              : "Guardar esta vista en favoritos"}
+          </button>
         </section>
 
         {/* CUERPO PRINCIPAL */}
@@ -289,9 +351,7 @@ function toEventItems(series = [], topN = 30) {
   return series
     .map((row, idx) => ({
       key: row.key ?? row.code ?? row.name ?? String(idx),
-      label: String(
-        row.label ?? row.name ?? row.country ?? `Item ${idx + 1}`
-      ),
+      label: String(row.label ?? row.name ?? row.country ?? `Item ${idx + 1}`),
       value: Number(row.value ?? row.count ?? row.total ?? 0),
     }))
     .sort((a, b) => b.value - a.value)
@@ -345,9 +405,7 @@ function KpiCard({ label, value, hint }) {
     <article className="kpi-card card">
       <h3 className="kpi-card__label">{label}</h3>
       <p className="kpi-card__value">
-        {typeof value === "number"
-          ? value.toLocaleString()
-          : value || "—"}
+        {typeof value === "number" ? value.toLocaleString() : value || "—"}
       </p>
       {hint && <p className="kpi-card__hint">{hint}</p>}
     </article>
@@ -359,8 +417,18 @@ function KpiCard({ label, value, hint }) {
    ========================= */
 
 const MONTH_LABELS = [
-  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
 ];
 
 function buildMockYearSeries(kind, year) {

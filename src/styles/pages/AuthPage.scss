@@ -1,0 +1,131 @@
+// src/styles/pages/AuthPage.scss
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+  color: #f5f5ff;
+
+  background:
+    radial-gradient(circle at top left, #1d2142 0, #050716 45%, #01020a 100%);
+
+  &__inner {
+    width: 100%;
+    max-width: 420px;
+  }
+}
+
+.auth-card {
+  position: relative;
+  padding: 28px 24px 24px;
+  border-radius: 24px;
+  background: radial-gradient(circle at top, #1f2747 0, #050715 60%, #050612 100%);
+  box-shadow:
+    0 24px 80px rgba(0, 0, 0, 0.75),
+    0 0 0 1px rgba(255, 255, 255, 0.03);
+
+  &--register {
+    /* si quieres un ligero cambio de fondo */
+  }
+
+  &__header {
+    margin-bottom: 20px;
+  }
+
+  &__eyebrow {
+    font-size: 0.75rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(198, 210, 255, 0.8);
+    margin-bottom: 4px;
+  }
+
+  &__title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  &__subtitle {
+    font-size: 0.9rem;
+    color: rgba(206, 215, 255, 0.8);
+  }
+
+  &__error {
+    padding: 10px 12px;
+    margin-bottom: 14px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    color: #ffd5d5;
+    background: rgba(255, 88, 88, 0.1);
+    border: 1px solid rgba(255, 120, 120, 0.5);
+  }
+
+  &__footer {
+    margin-top: 18px;
+    text-align: center;
+  }
+
+  &__hint {
+    font-size: 0.85rem;
+    color: rgba(200, 209, 255, 0.9);
+  }
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    label {
+      font-size: 0.8rem;
+      color: rgba(195, 205, 255, 0.9);
+    }
+
+    input {
+      
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(118, 132, 190, 0.7);
+      background: rgba(4, 7, 20, 0.85);
+      color: #f5f5ff;
+      font-size: 0.9rem;
+      outline: none;
+
+      &:focus {
+        border-color: #7b7df6;
+        box-shadow: 0 0 0 1px rgba(123, 125, 246, 0.55);
+      }
+    }
+  }
+
+  &__help {
+    font-size: 0.75rem;
+    color: rgba(178, 188, 245, 0.9);
+  }
+
+  &__actions {
+    margin-top: 8px;
+  }
+
+  &__submit {
+    width: 100%;
+  }
+}
+
+.auth-link {
+  color: #9f8bff;
+  font-weight: 500;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
