@@ -7,10 +7,12 @@ import Stats from "../pages/Stats";
 import NotFound from "../pages/NotFound";
 
 import Login from "../pages/Login";
-import Register from "../pages/Register"; // 👈 nuevo
+import Register from "../pages/Register";
 import Account from "../pages/Account";
 import SavedViews from "../pages/SavedViews";
 import Favorites from "../pages/Favorites";
+import Alerts from "../pages/Alerts";
+import Regions from "../pages/Regions";
 import { ProtectedRoute } from "./ProtectedRoute";
 
 export const router = createBrowserRouter([
@@ -42,6 +44,22 @@ export const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <Favorites />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/alerts",
+    element: (
+      <ProtectedRoute>
+        <Alerts />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/regions",
+    element: (
+      <ProtectedRoute>
+        <Regions />
       </ProtectedRoute>
     ),
   },
