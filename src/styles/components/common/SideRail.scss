@@ -125,6 +125,52 @@ $topbar-h: var(--topbar-h, 56px);
   border-radius: 99px;
 }
 
+/* Sección de usuario autenticado en el menú */
+.rail-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  min-width: 0; /* allow flex children to shrink */
+}
+
+.rail-user__avatar {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(132, 169, 255, 0.25);
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+  display: grid;
+  place-items: center;
+}
+
+.rail-user__info {
+  min-width: 0;          /* crucial: lets text truncate */
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.rail-user__name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rail-user__mail {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.55);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* Responsivo: ancho fluido del menú en móviles */
 @media (max-width: 920px) {
   .rail-menu { left: 16px; right: 16px; width: auto; }

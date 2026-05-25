@@ -194,6 +194,8 @@
   gap: 2px;
   font-size: 0.8rem;
   color: #a5a5c0;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .fav-card__note {
