@@ -43,9 +43,18 @@ export default function Register() {
           </header>
 
           {authError && (
-            <p className="auth-card__error">
-              {authError?.data?.message || "No se pudo crear la cuenta"}
-            </p>
+            <div className="auth-card__error">
+              <p>{authError?.message || authError?.data?.error || "No se pudo crear la cuenta"}</p>
+              {authError?.data?.details && (
+                <ul style={{ margin: '0.5rem 0 0', paddingLeft: '1.2rem', fontSize: '0.85rem' }}>
+                  {Object.entries(authError.data.details).map(([field, msgs]: [string, any]) =>
+                    (Array.isArray(msgs) ? msgs : [msgs]).map((msg: string, i: number) => (
+                      <li key={`${field}-${i}`}>{msg}</li>
+                    ))
+                  )}
+                </ul>
+              )}
+            </div>
           )}
 
           <form className="auth-form" onSubmit={handleSubmit}>
@@ -91,14 +100,13 @@ export default function Register() {
                 id="register-password"
                 type="password"
                 autoComplete="new-password"
-                placeholder="Mínimo 6 caracteres"
+                placeholder="Mínimo 8 caracteres con mayúsculas"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
               <small className="auth-form__help">
-                Usa al menos 6 caracteres. Más seguro si mezclas letras y
-                números.
+                Mínimo 8 caracteres. Debe contener al menos una mayúscula.
               </small>
             </div>
 

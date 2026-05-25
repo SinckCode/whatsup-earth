@@ -45,7 +45,7 @@ export async function apiFetch(path: string, {
   }
 
   if (!response.ok) {
-    const error: any = new Error(data?.message || 'Error en la petición');
+    const error: any = new Error(data?.message || data?.error || 'Error en la petición');
     error.status = response.status;
     error.data = data;
     throw error;

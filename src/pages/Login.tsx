@@ -40,7 +40,7 @@ export default function Login() {
 
           {authError && (
             <p className="auth-card__error">
-              {authError?.data?.message || "Error al iniciar sesión"}
+              {authError?.message || authError?.data?.error || "Error al iniciar sesión"}
             </p>
           )}
 
