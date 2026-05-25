@@ -27,6 +27,9 @@ import { useAuth } from "../app/AuthContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { addFavorite } from "../api/favoritesApi";
 
+/* Comments */
+import CommentSection from "../components/comments/CommentSection";
+
 /* ---------- Config base ---------- */
 
 const CURRENT_YEAR = new Date().getFullYear();
@@ -339,6 +342,13 @@ export default function StatsPage() {
               }}
             />
           </aside>
+        </section>
+
+        {/* Comentarios sobre esta vista de stats */}
+        <section className="stats-page__comments card" style={{ marginTop: '1.5rem' }}>
+          <CommentSection
+            eventId={`STATS_${disaster.key || categoryId}_${year}_${isYearMode ? 'WORLD' : country || 'WORLD'}`}
+          />
         </section>
       </div>
     </main>
