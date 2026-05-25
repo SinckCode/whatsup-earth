@@ -3,6 +3,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { loginUser, registerUser } from '../api/authApi';
 import { getCurrentUser } from '../api/userApi';
 import { loadSession, saveSession, clearSession } from './sessionStorage';
+import { apiClient } from '../api/client';
 
 const AuthContext = createContext(null);
 
@@ -12,6 +13,11 @@ export function AuthProvider({ children }) {
   const [isInitializing, setIsInitializing] = useState(true);
   const [isAuthLoading, setIsAuthLoading] = useState(false);
   const [authError, setAuthError] = useState(null);
+
+  // Sync token with apiClient
+  useEffect(() => {
+    apiClient.setToken(token);
+  }, [token]);
 
   // 🔄 Cargar sesión almacenada al inicio
   useEffect(() => {

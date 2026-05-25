@@ -1,5 +1,5 @@
 const API_BASE_URL =
-  import.meta.env.VITE_API_URL || "https://api-whatsupearth.angelonesto.com";
+  import.meta.env.VITE_API_URL || "https://api-whatsupearth.angelonesto.com/api";
 
 async function handleResponse(res: any) {
   if (!res.ok) {
@@ -19,7 +19,7 @@ async function handleResponse(res: any) {
  * GET /api/favorites
  */
 export async function fetchFavorites(token: any) {
-  const res = await fetch(`${API_BASE_URL}/api/favorites`, {
+  const res = await fetch(`${API_BASE_URL}/favorites`, {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
@@ -40,7 +40,7 @@ export async function fetchFavorites(token: any) {
  */
 export { addFavorite as createFavorite };
 export async function addFavorite(token: any, payload: any) {
-  const res = await fetch(`${API_BASE_URL}/api/favorites`, {
+  const res = await fetch(`${API_BASE_URL}/favorites`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -55,7 +55,7 @@ export async function addFavorite(token: any, payload: any) {
  * DELETE /api/favorites/:id
  */
 export async function deleteFavorite(token: any, id: any) {
-  const res = await fetch(`${API_BASE_URL}/api/favorites/${id}`, {
+  const res = await fetch(`${API_BASE_URL}/favorites/${id}`, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${token}`,

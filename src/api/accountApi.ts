@@ -3,10 +3,10 @@
 // Si ya tienes un API_BASE_URL en otro archivo, reutilízalo.
 // Aquí lo dejo simple para que lo adaptes:
 const API_BASE_URL =
-  import.meta.env.VITE_API_URL || "https://api-whatsupearth.angelonesto.com";
+  import.meta.env.VITE_API_URL || "https://api-whatsupearth.angelonesto.com/api";
 
 export async function updateMe(token, payload) {
-  const res = await fetch(`${API_BASE_URL}/api/me`, {
+  const res = await fetch(`${API_BASE_URL}/me`, {
     method: "PATCH", // o "PUT" si tu backend lo maneja así
     headers: {
       "Content-Type": "application/json",
