@@ -1,0 +1,208 @@
+.comment-section {
+  margin-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 1.5rem;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+
+    h3 {
+      font-size: 1.1rem;
+      margin: 0;
+      color: #e2e8f0;
+    }
+  }
+
+  &__stats {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.85rem;
+    color: #94a3b8;
+  }
+
+  &__form {
+    margin-bottom: 1.5rem;
+  }
+
+  &__input {
+    width: 100%;
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: #e2e8f0;
+    font-size: 0.875rem;
+    resize: vertical;
+    min-height: 60px;
+    font-family: inherit;
+    box-sizing: border-box;
+
+    &::placeholder {
+      color: #64748b;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: #3b82f6;
+    }
+  }
+
+  &__btn-submit {
+    margin-top: 0.5rem;
+    padding: 0.5rem 1.25rem;
+    background: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: background 0.2s;
+
+    &:hover {
+      background: #2563eb;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+
+  &__loading,
+  &__empty {
+    text-align: center;
+    color: #64748b;
+    padding: 1.5rem;
+    font-size: 0.9rem;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}
+
+.comment-item {
+  padding: 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+
+  &--reply {
+    margin-left: 2rem;
+    border-left: 2px solid rgba(59, 130, 246, 0.3);
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.35rem;
+  }
+
+  &__author {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #3b82f6;
+  }
+
+  &__date {
+    font-size: 0.75rem;
+    color: #64748b;
+  }
+
+  &__edited {
+    font-style: italic;
+    color: #94a3b8;
+  }
+
+  &__content {
+    font-size: 0.875rem;
+    color: #cbd5e1;
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  &__btn {
+    background: none;
+    border: none;
+    color: #64748b;
+    font-size: 0.75rem;
+    cursor: pointer;
+    padding: 0.2rem 0.4rem;
+
+    &:hover {
+      color: #e2e8f0;
+    }
+
+    &--delete:hover {
+      color: #ef4444;
+    }
+  }
+
+  &__edit {
+    margin-top: 0.5rem;
+
+    textarea {
+      width: 100%;
+      padding: 0.5rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 6px;
+      color: #e2e8f0;
+      font-size: 0.85rem;
+      font-family: inherit;
+      resize: vertical;
+      box-sizing: border-box;
+
+      &:focus {
+        outline: none;
+        border-color: #3b82f6;
+      }
+    }
+  }
+
+  &__edit-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.4rem;
+  }
+
+  &__btn-save {
+    padding: 0.3rem 0.75rem;
+    background: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    cursor: pointer;
+
+    &:hover {
+      background: #2563eb;
+    }
+  }
+
+  &__btn-cancel {
+    padding: 0.3rem 0.75rem;
+    background: transparent;
+    color: #94a3b8;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    font-size: 0.75rem;
+    cursor: pointer;
+
+    &:hover {
+      color: #e2e8f0;
+    }
+  }
+}
