@@ -6,7 +6,7 @@ import React, {
   forwardRef,
 } from "react";
 import { useNavigate } from "react-router-dom";
-import logoUrl from "../../../public/vite.svg"; // o "/vite.svg"
+const logoUrl = "/vite.svg";
 import "../../styles/components/common/TopBar.scss";
 
 import { DISASTERS } from "../../app/constants";
