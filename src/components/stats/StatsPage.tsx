@@ -55,9 +55,9 @@ export default function StatsPage() {
         <StatsHeader
           title={theme.title}
           subtitle={theme.subtitle}
-          onInfo={() => console.log("info", theme)}
-          onAdd={() => console.log("add custom filter")}
-          onChart={() => console.log("open full chart")}
+          onInfo={() => {}}
+          onAdd={() => {}}
+          onChart={() => {}}
         />
       }
       chart={
@@ -71,9 +71,8 @@ export default function StatsPage() {
             yKey={chartYKey}
             unit={chartUnit}
             loading={chartLoading}
-            onBarClick={(item) => {
-              console.log("bar clicked", item);
-              // aquí puedes disparar un filtro extra o centrar mapa
+            onBarClick={(_item) => {
+              // aqui puedes disparar un filtro extra o centrar mapa
             }}
           />
         </ChartShell>

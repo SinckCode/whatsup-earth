@@ -100,7 +100,6 @@ export default function SideRail({
       case "settings":
       case "about":
       default:
-        console.log("[SideRail] action:", key);
         break;
     }
     onAction?.(key);

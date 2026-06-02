@@ -71,7 +71,7 @@ export default function TopBar({
   title = "WHAT’S UP EARTH?",
   onMenu = () => {},
   onAnalytics = () => {},
-  onSearch = (q: any) => console.log("[TopBar] search:", q),
+  onSearch = (_q: any) => {},
   onAddSelect,
   onAnalyticsSelect,
 }: any = {}) {
