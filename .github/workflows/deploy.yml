@@ -1,16 +1,22 @@
-name: Deploy Whatsup Earth via API
+name: Deploy
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Llamar a /deploy en tu servidor
+      - name: Trigger deploy
         run: |
-          curl --fail -X POST "https://${{ secrets.SERVER_HOST }}/deploy" \
-            -H "Authorization: Bearer ${{ secrets.DEPLOY_SECRET }}"
+          response=$(curl -sS -w "\n%{http_code}" -X POST "${{ secrets.DEPLOY_URL }}" \
+            -H "Authorization: Bearer ${{ secrets.DEPLOY_TOKEN }}" \
+            -H "Content-Type: application/json")
+          http_code=$(echo "$response" | tail -1)
+          body=$(echo "$response" | head -n -1)
+          echo "$body"
+          if [ "$http_code" -ne 200 ]; then
+            echo "Deploy failed with status $http_code"
+            exit 1
+          fi
